@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 
 #attack,defence,koko,liha/kasvisyöjä,uros/naaras
 
@@ -6,7 +7,7 @@ def eläin():
     #jos speed on iso, ravinnontarve on suurempi (kuluttaa enemmän)
     speed = random.randint(1,9)
     #mitä pienempi energia, sitä nopeammin eläimeltä loppuu energia ja se kuolee
-    energia = 100-speed*10
+    energia = 30-speed*2
     #jos näköaisti on iso, näkee ravinnon ja muut eläimet kauempaa
     #näköaisti = 10-speed
     
@@ -26,7 +27,7 @@ def setup(koko):
                 grid.append([0])
                 
     animals = {}
-    for i in range(100):
+    for i in range(alkupopulaatio):
         animals["eläin"+str(i)] = eläin()
 
 
@@ -37,13 +38,20 @@ def setup(koko):
 
     return animals,grid
 
+#alueen koko
 koko = 100
-päivä = 500
+
+##################################
+päivä = 300
+monta_päivää = 50
+alkupopulaatio = 100
+kuinka_usein_printtaa = 100
+##################################
 
 animals,grid = setup(koko)
 
 #grid[y][x]
-for xx in range(10):
+for xx in range(monta_päivää):
     for animal in animals:
         viime_ruoka = []
         valmis = False
@@ -76,7 +84,7 @@ for xx in range(10):
             #print(animals[animal])
 
             #animals[animal][0] = nopeus
-            for i in range(int(animals[animal][0])):
+            for i in range(int(animals[animal][0])+int(animals[animal][1])):
                 
                 suunta = random.randint(1,4)
                 
@@ -133,14 +141,15 @@ for xx in range(10):
 
             
 
-    #miinustaa kaikista nyt FIXAA
+    #nopein syö ruuat
+    #toimii kai
     testilista = []
     for animal in animals:
         testilista.append(animal)
-        if animal in testilista:
-            pass
-        else:
-            for other_animal in animals:
+        for other_animal in animals:
+            if other_animal in testilista:
+                pass
+            else:
                 if type(animals[animal][-1]) == int and len(animals[animal])>2:
                     if type(animals[other_animal][-1]) == int and len(animals[other_animal])>2:
                         if animals[animal][-2] == animals[other_animal][-2]:
@@ -200,7 +209,7 @@ for xx in range(10):
                 
     for i in range(int(koko*0.8)):
         for j in range(int(koko*0.8)):
-            if random.randint(1,20) == 1:
+            if random.randint(1,10) < 3:
                 grid[i][j] = 1
                 
     
@@ -208,7 +217,31 @@ for xx in range(10):
     for animal in animals:
         animals[animal] = animals[animal][:2]
 
-    print(len(animals))
-    
+##    if xx%kuinka_usein_printtaa == 0:
+##        print(len(animals))
+
+    listax = []
+    for animal in animals:
+        listax.append(animals[animal][0])
+
+    plt.xlim([1,9])
+    plt.hist(listax,5)
+    plt.title("Day: "+str(xx))
+    plt.xlabel("Speed")
+    plt.ylabel("Population size")
+    plt.pause(0.05)
+    plt.clf()
+    plt.draw()
+
+
+listax = []
 for animal in animals:
-    print(animals[animal])
+    listax.append(animals[animal][0])
+
+plt.xlim([1,9])
+plt.hist(listax,5)
+plt.title("Day: "+str(xx))
+plt.xlabel("Speed")
+plt.ylabel("Population size")
+
+plt.show()
