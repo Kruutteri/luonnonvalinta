@@ -38,12 +38,12 @@ def setup(koko):
     return animals,grid
 
 koko = 100
-päivä = 720
+päivä = 500
 
 animals,grid = setup(koko)
 
 #grid[y][x]
-for xx in range(5):
+for xx in range(10):
     for animal in animals:
         viime_ruoka = []
         valmis = False
@@ -210,5 +210,5 @@ for xx in range(5):
 
     print(len(animals))
     
-##for animal in animals:
-##    print(animals[animal])
+for animal in animals:
+    print(animals[animal])
