@@ -38,7 +38,7 @@ def setup(koko):
     return animals,grid
 
 koko = 100
-päivä = 1000
+päivä = 720
 
 animals,grid = setup(koko)
 
@@ -121,29 +121,48 @@ for xx in range(5):
                     valmis = True
                     break
 
-
             if valmis:
                 break
+
+            else:
+                pass
+        
+        else:
+            animals[animal] = animals[animal][:2]
+                    
+
             
 
+    #miinustaa kaikista nyt FIXAA
+    testilista = []
     for animal in animals:
-        for other_animal in animals:
-            if type(animals[animal][-1]) == int and len(animals[animal])>2:
-                if type(animals[other_animal][-1]) == int and len(animals[other_animal])>2:
-                    if animals[animal][2] == animals[other_animal][2]:
-                        if animals[animal][0] > animals[other_animal][0]:
-                            animals[other_animal][-1] -= 1
-
-                        else:
-                            animals[animal][-1] -= 1
-
-                    if len(animals[animal]) == 5:
-                        if animals[animal][3] == animals[other_animal][3]:
+        testilista.append(animal)
+        if animal in testilista:
+            pass
+        else:
+            for other_animal in animals:
+                if type(animals[animal][-1]) == int and len(animals[animal])>2:
+                    if type(animals[other_animal][-1]) == int and len(animals[other_animal])>2:
+                        if animals[animal][-2] == animals[other_animal][-2]:
                             if animals[animal][0] > animals[other_animal][0]:
                                 animals[other_animal][-1] -= 1
+                                animals[other_animal].remove(animals[other_animal][2])
 
                             else:
                                 animals[animal][-1] -= 1
+                                animals[animal].remove(animals[animal][2])
+
+                        if animals[animal][-2] == animals[other_animal][-2]:
+                            if type(animals[animal][-2]) == list:
+                                if animals[animal][0] > animals[other_animal][0]:
+                                    animals[other_animal][-1] -= 1
+                                    animals[other_animal].remove(animals[other_animal][-2])
+
+                                else:
+                                    animals[animal][-1] -= 1
+                                    animals[animal].remove(animals[animal][-2])
+
+    
     poistolista = []
     lisääntymislista = []
     for animal in animals:
@@ -155,12 +174,10 @@ for xx in range(5):
                 lisääntymislista.append(animal)
 
             else:
-                print(animals[animal])
                 poistolista.append(animal)
                 
         else:
             poistolista.append(animal)
-    
     
     #tapetaan eläimet
     for animal in poistolista:
@@ -173,9 +190,17 @@ for xx in range(5):
             animals[animal+"v"+str(xx)] = animals[animal]
 
     #arvotaan uudet ruuat
+    grid = []
+    for i in range(koko):
+        for j in range(koko):
+            try:
+                grid[i].append(0)
+            except:
+                grid.append([0])
+                
     for i in range(int(koko*0.8)):
         for j in range(int(koko*0.8)):
-            if random.randint(1,10) == 1:
+            if random.randint(1,20) == 1:
                 grid[i][j] = 1
                 
     
